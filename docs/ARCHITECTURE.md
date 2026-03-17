@@ -75,6 +75,7 @@ flowchart TB
 | [backups/](backups/) | Timestamped backups (gitignored) |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | This documentation |
 | [docs/diagrams.html](docs/diagrams.html) | Visual diagrams (open in browser to view) |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | How to deploy and share the app via browser |
 | [run.py](run.py) | Convenience entry point: `python run.py` runs the web app |
 
 ---
