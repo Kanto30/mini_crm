@@ -11,7 +11,8 @@ try:
 except ImportError:
     HAS_FILELOCK = False
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Project root (parent of src/)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_FILE = os.path.join(BASE_DIR, "clients.json")
 LOCK_FILE = os.path.join(BASE_DIR, "clients.json.lock")
 BACKUP_DIR = os.path.join(BASE_DIR, "backups")

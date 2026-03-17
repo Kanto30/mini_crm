@@ -195,7 +195,7 @@ if st.button("Update status"):
 When `page == "Add note"`:
 
 1. Select a client as in Step 6.
-2. Show existing notes (if any):
+2. Show existing notes (if any)
 
 ```python
 if client["notes"]:

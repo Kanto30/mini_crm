@@ -40,7 +40,7 @@ flowchart TB
         FindClient[find_client_by_id]
     end
 
-    subgraph Theme [theme.py]
+    subgraph Assets [assets.py]
         Palette[Color Palette]
         StatusColors[STATUS_COLORS]
     end
@@ -51,7 +51,7 @@ flowchart TB
     end
 
     App --> Data
-    App --> Theme
+    App --> Assets
     TerminalApp --> Data
     Data --> ClientsJSON
     Data --> Backups
@@ -63,17 +63,19 @@ flowchart TB
 
 | File/Folder | Purpose |
 |-------------|---------|
-| [app.py](app.py) | Streamlit web app: UI, pages, navigation, styling |
-| [crm.py](crm.py) | Terminal-based CRM (shares data.py and clients.json) |
-| [data.py](data.py) | Data layer: load, save, backup, validation, locking |
-| [theme.py](theme.py) | Design constants: colors, fonts, status mapping |
+| [src/app.py](src/app.py) | Entry point: loads data, renders layout, routes to pages |
+| [src/client_management.py](src/client_management.py) | Client logic: view_all_clients, add_client, delete_client |
+| [src/data.py](src/data.py) | Data layer: load, save, backup, validation, locking |
+| [src/assets.py](src/assets.py) | UI: themes, styles, logo, sidebar |
+| [src/crm.py](src/crm.py) | Terminal-based CRM (shares data.py and clients.json) |
 | [.streamlit/config.toml](.streamlit/config.toml) | Streamlit theme (see Section 6 for values) |
 | [requirements.txt](requirements.txt) | Dependencies: streamlit, pandas, filelock, colorama |
 | [assets/logo_ramayana.png](assets/logo_ramayana.png) | Brand logo (top center of main area) |
 | [clients.json](clients.json) | Main data file (gitignored) |
 | [backups/](backups/) | Timestamped backups (gitignored) |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | This documentation |
-| [diagrams.html](diagrams.html) | Visual diagrams (open in browser to view) |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | This documentation |
+| [docs/diagrams.html](docs/diagrams.html) | Visual diagrams (open in browser to view) |
+| [run.py](run.py) | Convenience entry point: `python run.py` runs the web app |
 
 ---
 
@@ -183,7 +185,7 @@ flowchart TB
 
 ## 6. Theme and Styling
 
-**Palette (from [theme.py](theme.py)):**
+**Palette (from [assets.py](assets.py)):**
 - MOSS `#5A6D4C` — Primary actions, buttons
 - CYPRESS `#3D4F3A` — Sidebar, headers
 - OLIVE `#7A8B6E` — Secondary
@@ -199,7 +201,7 @@ flowchart TB
 - Sidebar: cypress → moss gradient, white text
 - Font: Nunito (Google Fonts)
 
-**Streamlit config (`.streamlit/config.toml`):**
+**Streamlit config** (`.streamlit/config.toml`):
 ```toml
 [theme]
 primaryColor = "#5A6D4C"
@@ -222,9 +224,9 @@ backups/
 1. **Prerequisites:** Python 3.10+, pip
 2. **Clone/copy** project folder
 3. **Install:** `pip install -r requirements.txt`
-4. **Add logo:** Place `logo_ramayana.png` in `assets/` (or update path in [app.py](app.py) line 232)
-5. **Run web app:** `streamlit run app.py` (from project root)
-6. **Run terminal app (optional):** `python crm.py` — uses same `clients.json`; requires `colorama`
+4. **Add logo:** Place `logo_ramayana.png` in `assets/` (or update path in [src/assets.py](src/assets.py))
+5. **Run web app:** `streamlit run src/app.py` or `python run.py` (from project root)
+6. **Run terminal app (optional):** `python src/crm.py` — uses same `clients.json`; requires `colorama`
 7. **Data:** `clients.json` created on first save; backups in `backups/`
 
 **Optional:** Remove logo line (231–233) if no logo; app works without it (will show error if file missing — consider `st.image` only if file exists).
@@ -233,4 +235,4 @@ backups/
 
 ## 8. Terminal CRM (crm.py)
 
-The project includes a terminal-based CRM that shares the same data layer. Run with `python crm.py`. It uses `colorama` for colored output. Both the web app and terminal app read/write the same `clients.json`; changes in one are visible in the other.
+The project includes a terminal-based CRM that shares the same data layer. Run with `python src/crm.py`. It uses `colorama` for colored output. Both the web app and terminal app read/write the same `clients.json`; changes in one are visible in the other.
