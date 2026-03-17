@@ -170,5 +170,5 @@ def render_logo():
     col_left, col_center, col_right = st.columns([1, 2, 1])
     with col_center:
         if os.path.isfile(LOGO_PATH):
-            st.image(LOGO_PATH, use_container_width=True)
+            st.image(LOGO_PATH, width="stretch")
     st.markdown("---")
