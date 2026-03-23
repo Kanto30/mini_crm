@@ -3,7 +3,11 @@ Assets: themes, styles, logo, and UI resources.
 All visual design, layout, and branding in one place.
 """
 
+import os
 import streamlit as st
+
+# Project root (parent of src/)
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ── Theme constants ──────────────────────────────────────────────────────────
 
@@ -28,8 +32,8 @@ STATUS_COLORS = {
 # Typography
 FONT_FAMILY = "Nunito, sans-serif"
 
-# Logo path (relative to project root when running streamlit)
-LOGO_PATH = "assets/logo_ramayana.png"
+# Logo path (absolute, works locally and when deployed)
+LOGO_PATH = os.path.join(_BASE_DIR, "assets", "logo_ramayana.png")
 
 
 # ── Styles (CSS) ─────────────────────────────────────────────────────────────
@@ -157,13 +161,24 @@ def render_sidebar():
         key="nav_page",
     )
     st.sidebar.markdown("---")
+    # Data source indicator (helps debug Supabase connection)
+    try:
+        from data import get_data_source
+        src = get_data_source()
+        if src == "supabase":
+            st.sidebar.caption("✓ Datos: Supabase")
+        else:
+            st.sidebar.caption("⚠ Datos: archivo local — añade SUPABASE_URL y SUPABASE_KEY en Secrets")
+    except Exception:
+        pass
     st.sidebar.caption("Wellness Client Manager")
     return page
 
 
 def render_logo():
-    """Render centered logo at top of main area."""
+    """Render centered logo at top of main area. Skips if file missing (e.g. deployment)."""
     col_left, col_center, col_right = st.columns([1, 2, 1])
     with col_center:
-        st.image(LOGO_PATH, use_container_width=True)
+        if os.path.isfile(LOGO_PATH):
+            st.image(LOGO_PATH, width="stretch")
     st.markdown("---")
